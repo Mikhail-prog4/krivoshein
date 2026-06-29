@@ -6,8 +6,8 @@
   <meta name="robots" content="noindex, nofollow" />
 
   <title>Портфолио — Михаил Кривошеин</title>
-  <!-- Иконка вкладки — фото -->
-  <link rel="icon" type="image/png" href="favicon.png" />
+  <link rel="icon" type="image/x-icon" href="favicon.ico" />
+  <link rel="icon" type="image/png" sizes="256x256" href="favicon.png" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -23,6 +23,7 @@
       --card-border:  rgba(255,255,255,.09);
       --text:         #f3f4f6;
       --muted:        #9599a4;
+      --icon:         #aab0bd;
       --radius:       12px;
     }
     body.light {
@@ -34,6 +35,7 @@
       --card-border:  #ececea;
       --text:         #18181b;
       --muted:        #6b6b72;
+      --icon:         #71717a;
     }
     * { margin: 0; padding: 0; box-sizing: border-box; }
     html, body { min-height: 100%; }
@@ -65,25 +67,28 @@
     .head h1 { font-size: 1.6rem; font-weight: 800; letter-spacing: -.02em; }
     .head p  { margin-top: 6px; color: var(--muted); font-size: .92rem; }
 
-    /* Плотная сетка карточек — как список коннекторов */
     .grid { display: grid; gap: 10px; grid-template-columns: repeat(auto-fill, minmax(330px, 1fr)); }
 
     .card {
       display: flex; align-items: flex-start; gap: 11px;
-      padding: 11px 13px;
+      padding: 11px 13px; cursor: pointer;
       background: var(--card); border: 1px solid var(--card-border);
       border-radius: var(--radius); text-decoration: none; color: var(--text);
       transition: transform .16s, border-color .16s, background .16s;
       opacity: 0; transform: translateY(8px); animation: reveal .45s cubic-bezier(.2,.7,.2,1) forwards;
     }
     .card:hover { transform: translateY(-2px); border-color: var(--accent); background: rgba(255,255,255,.05); }
+    body.light .card:hover { background: rgba(0,0,0,.03); }
     @keyframes reveal { to { opacity: 1; transform: translateY(0); } }
 
     .ic {
       flex: 0 0 auto; width: 38px; height: 38px; border-radius: 9px;
-      display: grid; place-items: center; font-size: 19px; overflow: hidden;
+      display: grid; place-items: center; overflow: hidden;
+      background: var(--accent-soft); color: var(--icon);
+      transition: color .2s;
     }
-    .ic img { width: 100%; height: 100%; object-fit: cover; }
+    .card:hover .ic { color: var(--accent); }
+    .ic svg { width: 20px; height: 20px; fill: currentColor; }
 
     .main { flex: 1; min-width: 0; padding-top: 1px; }
     .row1 { display: flex; align-items: center; gap: 7px; }
@@ -97,13 +102,76 @@
 
     .footer { text-align: center; margin-top: 28px; color: var(--muted); font-size: .78rem; }
 
-    @media (max-width: 520px) {
-      .grid { grid-template-columns: 1fr; }
-      .head h1 { font-size: 1.4rem; }
-      body { padding: 28px 16px 40px; }
+    .modal-overlay {
+      position: fixed; inset: 0; z-index: 100;
+      background: rgba(0,0,0,.65);
+      backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+      display: none; justify-content: center; align-items: flex-start;
+      padding: 40px 16px; overflow-y: auto;
+      opacity: 0; transition: opacity .25s ease;
     }
-    .card:hover { background: rgba(255,255,255,.05); }
-    body.light .card:hover { background: rgba(0,0,0,.03); }
+    .modal-overlay.open { display: flex; }
+    .modal-overlay.visible { opacity: 1; }
+    body.light .modal-overlay { background: rgba(0,0,0,.35); }
+
+    .modal {
+      width: 100%; max-width: 560px;
+      background: var(--bg); border: 1px solid var(--card-border);
+      border-radius: 18px; box-shadow: 0 30px 80px rgba(0,0,0,.5);
+      padding: 28px 24px 24px;
+      transform: translateY(16px) scale(.97); transition: transform .3s cubic-bezier(.2,.7,.2,1);
+      position: relative;
+    }
+    body.light .modal { background: #fff; box-shadow: 0 20px 60px rgba(0,0,0,.12); }
+    .modal-overlay.visible .modal { transform: translateY(0) scale(1); }
+
+    .modal-close {
+      position: absolute; top: 14px; right: 14px;
+      width: 34px; height: 34px; display: grid; place-items: center;
+      border-radius: 50%; cursor: pointer; color: var(--muted);
+      background: var(--card); border: 1px solid var(--card-border);
+      transition: color .2s, border-color .2s;
+    }
+    .modal-close:hover { color: var(--accent); border-color: var(--accent); }
+    .modal-close svg { width: 15px; height: 15px; fill: currentColor; }
+
+    .modal-icon {
+      width: 48px; height: 48px; border-radius: 12px;
+      display: grid; place-items: center;
+      background: var(--accent-soft); color: var(--icon);
+      margin-bottom: 16px;
+    }
+    .modal-icon svg { width: 26px; height: 26px; fill: currentColor; }
+
+    .modal h2 { font-size: 1.25rem; font-weight: 700; letter-spacing: -.01em; margin-bottom: 4px; }
+    .modal .modal-badge { font-size: .72rem; font-weight: 600; color: var(--accent); background: var(--accent-soft); padding: 3px 9px; border-radius: 999px; display: inline-block; margin-bottom: 14px; }
+    .modal .modal-desc { color: var(--muted); font-size: .9rem; line-height: 1.6; margin-bottom: 18px; }
+
+    .modal-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 18px; }
+    .modal-tag {
+      font-size: .72rem; font-weight: 500; color: var(--text);
+      background: var(--card); border: 1px solid var(--card-border);
+      padding: 4px 10px; border-radius: 8px;
+    }
+
+    .modal-screenshots { display: flex; flex-direction: column; gap: 10px; margin-bottom: 18px; }
+    .modal-screenshots img {
+      width: 100%; border-radius: 10px;
+      border: 1px solid var(--card-border);
+      object-fit: cover;
+    }
+
+    .modal-features { margin-bottom: 6px; }
+    .modal-features h3 { font-size: .82rem; font-weight: 600; margin-bottom: 8px; color: var(--text); }
+    .modal-features ul { list-style: none; padding: 0; }
+    .modal-features li {
+      position: relative; padding-left: 16px;
+      color: var(--muted); font-size: .82rem; line-height: 1.6;
+    }
+    .modal-features li::before {
+      content: ''; position: absolute; left: 0; top: 8px;
+      width: 5px; height: 5px; border-radius: 50%; background: var(--accent);
+    }
 
     .theme-toggle {
       position: fixed; top: 18px; right: 18px; z-index: 10;
@@ -118,6 +186,13 @@
     body.light .theme-toggle .sun  { display: block; }
     body.light .theme-toggle .moon { display: none; }
 
+    @media (max-width: 520px) {
+      .grid { grid-template-columns: 1fr; }
+      .head h1 { font-size: 1.4rem; }
+      body { padding: 28px 16px 40px; }
+      .modal { padding: 24px 18px 20px; }
+      .modal-overlay { padding: 24px 12px; }
+    }
     @media (hover: none) { .spotlight { display: none; } }
   </style>
 </head>
@@ -144,71 +219,308 @@
     <footer class="footer">© 2026 Михаил Кривошеин</footer>
   </div>
 
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="modal" id="modal"></div>
+  </div>
+
   <script>
-    /* =========================================================================
-       👇 РЕДАКТИРУЙ ЗДЕСЬ. Добавляй/меняй свои работы. Код ниже трогать не нужно.
-       Поля карточки:
-         emoji  — иконка-эмодзи в квадрате слева (или "")
-         image  — путь к скриншоту/лого (напр. "work1.jpg"); если задан — заменяет эмодзи
-         grad   — фон квадрата-иконки (CSS-градиент), если нет своей картинки
-         badge  — метка-категория справа от названия (напр. "CRM"); или ""
-         title  — название проекта
-         desc   — короткое описание (1-2 строки)
-         url    — ссылка на проект (или "" — тогда карточка не кликается)
-       ========================================================================= */
+    const ICONS = {
+      erp:        '<svg viewBox="0 0 24 24"><path d="M4 5a2 2 0 012-2h12a2 2 0 012 2v14a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm4 2v2h8V7H8zm0 4v2h8v-2H8zm0 4v2h5v-2H8z"/></svg>',
+      game:       '<svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>',
+      ai:         '<svg viewBox="0 0 24 24"><path d="M12 2a4 4 0 014 4c0 1.1-.45 2.1-1.17 2.83L12 12l-2.83-3.17A4 4 0 0112 2zm-6 8a2 2 0 110 4 2 2 0 010-4zm12 0a2 2 0 110 4 2 2 0 010-4zm-6 5a4 4 0 014 4H8a4 4 0 014-4z"/></svg>',
+      ticket:     '<svg viewBox="0 0 24 24"><path d="M20 4H4a2 2 0 00-2 2v4a2 2 0 002 2 2 2 0 010 4H4a2 2 0 00-2 2v0a2 2 0 002 2h16a2 2 0 002-2v0a2 2 0 00-2-2 2 2 0 010-4 2 2 0 002-2V6a2 2 0 00-2-2z"/></svg>',
+      server:     '<svg viewBox="0 0 24 24"><path d="M5 3h14a2 2 0 012 2v4a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2zm0 10h14a2 2 0 012 2v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4a2 2 0 012-2zm2-7a1 1 0 100 2 1 1 0 000-2zm0 10a1 1 0 100 2 1 1 0 000-2z"/></svg>',
+      video_call: '<svg viewBox="0 0 24 24"><path d="M17 10.5V7a1 1 0 00-1-1H4a1 1 0 00-1 1v10a1 1 0 001 1h12a1 1 0 001-1v-3.5l4 4v-11l-4 4z"/></svg>',
+      bot:        '<svg viewBox="0 0 24 24"><path d="M12 2a2 2 0 012 2c0 .74-.4 1.39-1 1.73V7h3a4 4 0 014 4v1a2 2 0 110 4v1a4 4 0 01-4 4H8a4 4 0 01-4-4v-1a2 2 0 110-4v-1a4 4 0 014-4h3V5.73c-.6-.34-1-.99-1-1.73a2 2 0 012-2zm-2 10a1.5 1.5 0 100 3 1.5 1.5 0 000-3zm4 0a1.5 1.5 0 100 3 1.5 1.5 0 000-3z"/></svg>',
+      layout:     '<svg viewBox="0 0 24 24"><path d="M4 4h16a2 2 0 012 2v12a2 2 0 01-2 2H4a2 2 0 01-2-2V6a2 2 0 012-2zm0 4v10h16V8H4z"/></svg>',
+      check_doc:  '<svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6zm0 2l4 4h-4V4zM9 13l2 2 4-4"/></svg>',
+      film:       '<svg viewBox="0 0 24 24"><path d="M19.82 2H4.18A2.18 2.18 0 002 4.18v15.64A2.18 2.18 0 004.18 22h15.64A2.18 2.18 0 0022 19.82V4.18A2.18 2.18 0 0019.82 2zM7 2v20M17 2v20M2 12h20M2 7h5M2 17h5M17 17h5M17 7h5"/></svg>',
+      chat_ai:    '<svg viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>',
+      shield:     '<svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10zm-1-11V8l-3 3 3 3zm2-3v6l3-3-3-3z"/></svg>',
+      dumbbell:   '<svg viewBox="0 0 24 24"><path d="M6.5 6a1.5 1.5 0 00-1.5 1.5v2H3.5A1.5 1.5 0 002 11v2a1.5 1.5 0 001.5 1.5H5v2A1.5 1.5 0 006.5 18h1A1.5 1.5 0 009 16.5v-9A1.5 1.5 0 007.5 6h-1zm11 0a1.5 1.5 0 00-1.5 1.5v9a1.5 1.5 0 001.5 1.5h1a1.5 1.5 0 001.5-1.5v-2h1.5A1.5 1.5 0 0022 13v-2a1.5 1.5 0 00-1.5-1.5H19v-2A1.5 1.5 0 0017.5 6h-1zM9 11h6v2H9v-2z"/></svg>',
+      trophy:     '<svg viewBox="0 0 24 24"><path d="M8 21h8m-4-4v4M6 4h12v2a6 6 0 01-12 0V4zm12 0h2a2 2 0 012 2v1a4 4 0 01-4 4M6 4H4a2 2 0 00-2 2v1a4 4 0 004 4"/></svg>',
+      search:     '<svg viewBox="0 0 24 24"><path d="M11 19a8 8 0 100-16 8 8 0 000 16zm10 2l-4.35-4.35M11 8v6m-3-3h6"/></svg>',
+      reply:      '<svg viewBox="0 0 24 24"><path d="M9 14L4 9l5-5m-5 5h11a4 4 0 014 4v2M4 9h7"/></svg>',
+      dashboard:  '<svg viewBox="0 0 24 24"><path d="M4 4h6v8H4V4zm10 0h6v5h-6V4zM4 16h6v4H4v-4zm10-3h6v7h-6v-7z"/></svg>',
+      bank:       '<svg viewBox="0 0 24 24"><path d="M12 2L2 7h20L12 2zM4 9v8h2V9H4zm5 0v8h2V9H9zm5 0v8h2V9h-2zm5 0v8h2V9h-2zM2 19h20v2H2v-2z"/></svg>',
+    };
+
+    const ARROW = '<svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg>';
+    const CLOSE = '<svg viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg>';
+
     const PROJECTS = [
       {
-        emoji: "🤖", image: "", grad: "linear-gradient(135deg,#4f46e5,#7c3aed)", badge: "CRM",
-        title: "CRM для отдела продаж",
-        desc: "Автоматизация заявок, воронки и отчётности. Ручной работы у менеджеров вдвое меньше.",
-        url: "#"
+        icon: "erp", badge: "ERP",
+        title: "ERP-система управления снабжением",
+        desc: "Управление заказами и производством — от заявки до отгрузки.",
+        detail: "Полноценная production-система для компании, работающей с доборными элементами из металла. Управление всей цепочкой: от приёма заказа до отгрузки готовой продукции.",
+        tags: ["Python", "FastAPI", "PostgreSQL", "SQLAlchemy", "Alembic", "JWT", "Nginx"],
+        features: [
+          "Модули: заказы, производство, справочники, аудит, кастомные поля",
+          "REST API, система ролей и прав доступа",
+          "Авто-бэкапы БД каждые сутки, healthcheck каждые 5 минут",
+          "Деплой без GitHub: tar+ssh на production-сервер",
+        ],
+        screenshots: ["portfolio-img/snab-logo.webp"],
       },
       {
-        emoji: "💬", image: "", grad: "linear-gradient(135deg,#0ea5e9,#22d3ee)", badge: "Bot",
-        title: "Telegram-бот для клиентских задач",
-        desc: "Приём заявок, оплаты и уведомления прямо в чате. Работает 24/7 без оператора.",
-        url: "#"
+        icon: "game", badge: "Web App",
+        title: "Геймифицированный AI-продукт",
+        desc: "Многодневная игра: стреляй по слабым идеям, получай персональные AI-рекомендации.",
+        detail: "Интерактивная бесплатная игра для онлайн-школы. Игрок проходит эпизоды: в первом — учится критически оценивать бизнес-идеи, во втором — получает персональные AI-рекомендации по микропродуктам на основе своих ответов.",
+        tags: ["Next.js", "React", "TypeScript", "Prisma", "PostgreSQL", "Claude API", "Vercel"],
+        features: [
+          "Многоэпизодная структура с прогрессией",
+          "AI генерирует персональные рекомендации по ответам игрока",
+          "Email-уведомления (Resend), JWT-авторизация",
+          "Задеплоен на Vercel, работает в production",
+        ],
+        screenshots: [],
       },
       {
-        emoji: "🌐", image: "", grad: "linear-gradient(135deg,#ec4899,#f59e0b)", badge: "Web",
-        title: "Лендинг под ключ",
-        desc: "Сайт-визитка с фокусом на конверсию — от структуры и текста до публикации.",
-        url: "#"
+        icon: "ai", badge: "AI",
+        title: "AI-агент для автооптимизации лендингов",
+        desc: "Два AI-агента в цикле: один предлагает правки, второй критически проверяет.",
+        detail: "CRO-система непрерывной оптимизации лендинга. Два AI-агента работают в цикле: Аналитик предлагает правки на основе метрик, Мастер критически проверяет и утверждает. Защиты от деградации, автоматический деплой.",
+        tags: ["Python", "Claude API", "Яндекс.Метрика", "FTP", "HTML"],
+        features: [
+          "Двухагентная архитектура: Аналитик (Haiku) → Мастер (Sonnet)",
+          "Данные из Яндекс.Метрики: bounce rate, конверсии, глубина",
+          "Лимит 3 итерации/день, стоп-кран по bounce rate",
+          "Версионирование HTML (v0, v1, v2…), автодеплой через FTP",
+        ],
+        screenshots: [],
       },
       {
-        emoji: "🔗", image: "", grad: "linear-gradient(135deg,#10b981,#0ea5e9)", badge: "API",
-        title: "Связка сервисов и автоматизация",
-        desc: "CRM, мессенджеры и платёжка соединены через API — данные ходят между системами сами.",
-        url: "#"
+        icon: "ticket", badge: "Web",
+        title: "Коммерческий сайт мероприятий",
+        desc: "Приём заказов с онлайн-оплатой, QR-билетами и email-уведомлениями.",
+        detail: "Боевой сайт культурного пространства. Полный цикл: посетитель выбирает мероприятие → оплачивает онлайн → получает QR-билет на email. Резервный сервер с авто-синхронизацией каждые 3 часа.",
+        tags: ["PHP", "Nginx", "YooKassa", "Brevo", "Cloudflare", "JSON"],
+        features: [
+          "Онлайн-оплата через YooKassa, вебхуки",
+          "QR-коды при оплате, email через Brevo API",
+          "20+ итераций popup-формы заказа",
+          "Резервный сервер с авто-синком, тестовая среда",
+        ],
+        screenshots: ["portfolio-img/katok.jpeg", "portfolio-img/katok-popup.jpeg"],
+      },
+      {
+        icon: "server", badge: "Backend",
+        title: "Микросервисная экосистема",
+        desc: "4 сервиса для онлайн-школы: платежи, финансы, поддержка, панель управления.",
+        detail: "Набор связанных микросервисов для автоматизации онлайн-школы. Единая архитектура: Fastify + Prisma + PostgreSQL + Redis. Каждый сервис решает свою задачу, все связаны через общую панель управления.",
+        tags: ["Node.js", "TypeScript", "Fastify", "Prisma", "PostgreSQL", "Redis", "BullMQ", "Docker"],
+        features: [
+          "Платёжный сервис: Robokassa + Tinkoff, чеки 54-ФЗ",
+          "Финансовый учёт: доходы, расходы, зарплаты, налоги УСН",
+          "Telegram-бот поддержки: FAQ, тикеты, SLA, массовые рассылки",
+          "Единая панель управления всеми сервисами",
+        ],
+        screenshots: [],
+      },
+      {
+        icon: "video_call", badge: "Автоматизация",
+        title: "Организатор встреч",
+        desc: "Zoom → Telegram → Google Calendar → YouTube → расшифровка — всё автоматически.",
+        detail: "Полная автоматизация цикла онлайн-встречи: создание Zoom-конференции, анонс в Telegram с картинкой, добавление в Google Calendar, напоминание за 5 минут, скачивание записи, загрузка на YouTube, расшифровка через Deepgram.",
+        tags: ["Node.js", "TypeScript", "Fastify", "Zoom API", "Telegram Bot", "YouTube API", "Google Calendar", "Deepgram", "Docker"],
+        features: [
+          "Групповые и личные (1 на 1) встречи",
+          "Автоматические анонсы с картинкой в Telegram",
+          "Запись → YouTube → расшифровка без ручного вмешательства",
+          "Напоминания за 5 минут через Telegram",
+        ],
+        screenshots: [],
+      },
+      {
+        icon: "chat_ai", badge: "AI",
+        title: "Цифровой AI-клон",
+        desc: "Чат-бот, который отвечает в стиле конкретного человека — его знаниями и манерой.",
+        detail: "Интерактивный AI-чатбот, обученный на стиле, знаниях и манере конкретного человека. Посетители сайта могут задавать вопросы и получать ответы, как если бы общались с ним лично.",
+        tags: ["Next.js", "TypeScript", "PHP", "Claude API"],
+        features: [
+          "Обучен на реальных материалах, интервью и стиле общения",
+          "Ответы в характерной манере: лексика, структура, тон",
+          "Фронтенд на Next.js, бэкенд на PHP",
+          "Задеплоен и работает в production",
+        ],
+        screenshots: [],
+      },
+      {
+        icon: "check_doc", badge: "AI",
+        title: "AI-ревьюер сценариев",
+        desc: "Загрузи документ — AI оценит его по 5 критериям и даст обратную связь.",
+        detail: "Веб-сервис для студентов онлайн-курса. Загружаешь PDF/DOCX со сценарием первой встречи с фаундером — Claude API автоматически оценивает по 5 критериям и выдаёт развёрнутую обратную связь прямо в браузере.",
+        tags: ["Node.js", "Claude API", "Docker", "SSL"],
+        features: [
+          "Загрузка PDF/DOCX прямо в браузер",
+          "Оценка по 5 критериям через Claude API",
+          "Развёрнутая обратная связь с рекомендациями",
+          "Развёрнут на VPS, SSL Let's Encrypt",
+        ],
+        screenshots: ["portfolio-img/scenario-reviewer.png"],
+      },
+      {
+        icon: "bot", badge: "Боты",
+        title: "Telegram-боты для контентных воронок",
+        desc: "Адвент-календари, нумерология, ежедневный контент — 3 бота для разных задач.",
+        detail: "Серия Telegram-ботов для автоматической выдачи контента по дням. Адвент-календарь на 31 день (видео + медитации + призы), бот нумерологического прогноза (матрица судьбы по дате рождения). Использовались в реальных маркетинговых кампаниях.",
+        tags: ["Python", "aiogram", "JSON", "FSM"],
+        features: [
+          "Адвент-календарь: 31 день контента, видео, аудио-призы",
+          "Нумерология: расчёт матрицы по дате рождения, персональный прогноз",
+          "Хранение состояния пользователя в JSON",
+          "Готовые продающие тексты и воронки",
+        ],
+        screenshots: [],
+      },
+      {
+        icon: "layout", badge: "Web",
+        title: "Лендинги под ключ",
+        desc: "Сайты-визитки с фокусом на конверсию — от структуры до публикации.",
+        detail: "Несколько лендингов для разных клиентов и ниш: продукт «Письма к себе», онлайн-школа, AI-практикум. Каждый — с продуманной структурой, адаптивной вёрсткой и интеграцией оплаты.",
+        tags: ["HTML", "CSS", "JavaScript", "Node.js", "PHP", "Robokassa"],
+        features: [
+          "Адаптивная вёрстка, mobile-first",
+          "Интеграция с платёжными системами (Robokassa)",
+          "Страницы оферты, privacy, возврата",
+          "SEO-оптимизация, быстрая загрузка",
+        ],
+        screenshots: [],
+      },
+      {
+        icon: "film", badge: "Автоматизация",
+        title: "Автосборка видео для YouTube/Reels",
+        desc: "Полный пайплайн: голос → субтитры → AI-сцены → монтаж → рендер mp4.",
+        detail: "Система автоматической сборки вертикальных роликов за 0 ₽. Поток: запись голоса → субтитры через faster-whisper → AI-сцены (FLUX + LTX) → монтаж в Remotion → рендер mp4. Поддержка форматов 9:16 и 16:9.",
+        tags: ["TypeScript", "Remotion", "Python", "ffmpeg", "HuggingFace", "faster-whisper"],
+        features: [
+          "Talking-head + AI-вставки + караоке-субтитры",
+          "Бесплатная генерация через HuggingFace ZeroGPU",
+          "Два формата: вертикальный (Reels) и горизонтальный (YouTube)",
+          "Готовые ролики уже собраны и опубликованы",
+        ],
+        screenshots: [],
+      },
+      {
+        icon: "shield", badge: "Инфра",
+        title: "VPN-сервер на 20 пользователей",
+        desc: "7 каналов связи, авто-мониторинг, UFW — закрытая инфраструктура для команды.",
+        detail: "VPN-сервер для команды из 20 человек. 7 протоколов: VLESS Reality, Cloudflare CDN, Brutal, gRPC, Shadowsocks, Trojan, Hysteria v2. Автоматический мониторинг, файрвол, клиентские конфиги через Karing.",
+        tags: ["3x-ui", "xray", "Hysteria v2", "Cloudflare", "Ubuntu", "Python", "Node.js"],
+        features: [
+          "7 каналов связи для разных сценариев",
+          "Автоматический мониторинг доступности",
+          "UFW-файрвол, авто-обновление конфигов",
+          "Переезд между серверами без даунтайма",
+        ],
+        screenshots: [],
+      },
+      {
+        icon: "dumbbell", badge: "Web",
+        title: "Лендинг фитнес-студии",
+        desc: "Одностраничный сайт с направлениями, картой и формой заявки.",
+        detail: "Лендинг для сети фитнес-студий в Краснодаре (2 локации). Секции: герой, о студии, направления тренировок, Яндекс.Карта с адресами, форма заявки, FAQ. Mobile-first дизайн.",
+        tags: ["Next.js 16", "React 19", "TypeScript", "Tailwind CSS", "shadcn/ui", "Framer Motion"],
+        features: [
+          "Mobile-first, адаптивный дизайн",
+          "Карусель, анимации, тёмная/светлая тема",
+          "Интеграция Яндекс.Карт",
+          "shadcn/ui + Radix UI — компонентная система",
+        ],
+        screenshots: [],
+      },
+      {
+        icon: "trophy", badge: "Web",
+        title: "Реферальный лидерборд",
+        desc: "Регистрация → реферальная ссылка → лидерборд → автоматизация через CRM.",
+        detail: "Сайт-челлендж с реферальной механикой. Участник регистрируется, получает уникальную ссылку, приглашает друзей — позиция в лидерборде обновляется автоматически. Интеграция с CRM и Telegram-ботом.",
+        tags: ["JavaScript", "Python", "Google Apps Script", "Docker", "Railway"],
+        features: [
+          "Форма регистрации → CRM",
+          "Реферальный лидерборд через Telegram-бот",
+          "Email-подтверждение участия",
+          "Задеплоен на Railway",
+        ],
+        screenshots: [],
+      },
+      {
+        icon: "search", badge: "Парсинг",
+        title: "Парсер базы блогеров",
+        desc: "Автоматический сбор и квалификация блогеров из Telegram и Instagram.",
+        detail: "Агентский парсер для сбора базы блогеров определённой тематики. Несколько итераций поиска (A–H), фильтрация по критериям: 650–3500 подписчиков, ERR 20%+, живые комментарии. Финальная база — 67+ квалифицированных контактов.",
+        tags: ["Python", "CSV", "Excel"],
+        features: [
+          "Многоитерационный агентский поиск",
+          "Фильтрация по engagement rate и активности",
+          "Два источника: Telegram + Instagram",
+          "Финальная выгрузка в CSV/Excel",
+        ],
+        screenshots: [],
+      },
+      {
+        icon: "reply", badge: "Бот",
+        title: "AI-автоответчик для Telegram",
+        desc: "Автоматически отвечает на входящие сообщения — работает 24/7.",
+        detail: "Telegram-бот, который автоматически отвечает на входящие сообщения. Развёрнут в Docker на VPS, работает круглосуточно без участия человека.",
+        tags: ["Python", "aiogram", "PostgreSQL", "Docker"],
+        features: [
+          "Автоматические ответы на входящие",
+          "Хранение истории в PostgreSQL",
+          "Docker-контейнер на VPS",
+          "Работает 24/7 без оператора",
+        ],
+        screenshots: [],
+      },
+      {
+        icon: "dashboard", badge: "Web App",
+        title: "Панель управления сервисами",
+        desc: "Единый дашборд для запуска всех микросервисов + AI-банк идей.",
+        detail: "Два проекта в одном. Панель-лаунчер: плитки с быстрым доступом ко всем сервисам экосистемы через один пароль. Банк идей: AI-обработка входящих идей через Claude, хранение в Supabase.",
+        tags: ["Fastify", "TypeScript", "Next.js", "Supabase", "Claude API", "Docker"],
+        features: [
+          "Единая точка входа во все микросервисы",
+          "Авторизация одним паролем",
+          "AI-банк идей: приём → обработка → хранение",
+          "Развёрнут на VPS в Docker",
+        ],
+        screenshots: [],
+      },
+      {
+        icon: "bank", badge: "Web App",
+        title: "Игровая банковская система",
+        desc: "Внутренняя валюта, магазин, команды и рейтинг — геймификация для образования.",
+        detail: "Игровая экономика для образовательной платформы. Студенты зарабатывают внутреннюю валюту, тратят в магазине, формируют команды. Рейтинг автоматически выгружается в Excel. API для управления заказами, продуктами и командами.",
+        tags: ["Node.js", "Supabase", "PostgreSQL", "ExcelJS", "JWT", "Vercel"],
+        features: [
+          "Внутренняя валюта и магазин",
+          "Команды, рейтинг, автовыгрузка в Excel",
+          "API для управления заказами и продуктами",
+          "Задеплоен на Vercel",
+        ],
+        screenshots: [],
       },
     ];
-
-    /* ===================== Движок. Менять не нужно. ===================== */
-    const ARROW = '<svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg>';
 
     function renderProjects() {
       const grid = document.getElementById("grid");
       PROJECTS.forEach((p, i) => {
-        const card = document.createElement(p.url ? "a" : "div");
+        const card = document.createElement("div");
         card.className = "card";
         card.style.animationDelay = (0.03 + i * 0.04) + "s";
-        if (p.url) { card.href = p.url; card.target = "_blank"; card.rel = "noopener noreferrer"; }
+        card.addEventListener("click", () => openModal(i));
 
         const ic = document.createElement("div");
         ic.className = "ic";
-        if (p.image) {
-          const img = document.createElement("img"); img.src = p.image; img.alt = p.title; ic.appendChild(img);
-        } else {
-          ic.style.background = p.grad || "linear-gradient(135deg,#4f46e5,#7c3aed)";
-          ic.textContent = p.emoji || "📦";
-        }
+        ic.innerHTML = ICONS[p.icon] || ICONS.layout;
 
         const main = document.createElement("div"); main.className = "main";
         const row1 = document.createElement("div"); row1.className = "row1";
         const t = document.createElement("span"); t.className = "title"; t.textContent = p.title;
         row1.appendChild(t);
         if (p.badge) { const b = document.createElement("span"); b.className = "badge"; b.textContent = p.badge; row1.appendChild(b); }
-        if (p.url) { const a = document.createElement("span"); a.className = "arrow"; a.innerHTML = ARROW; row1.appendChild(a); }
+        const a = document.createElement("span"); a.className = "arrow"; a.innerHTML = ARROW; row1.appendChild(a);
 
         const d = document.createElement("div"); d.className = "desc"; d.textContent = p.desc;
 
@@ -217,6 +529,60 @@
         grid.appendChild(card);
       });
     }
+
+    function openModal(i) {
+      const p = PROJECTS[i];
+      const modal = document.getElementById("modal");
+
+      let screenshotsHTML = '';
+      if (p.screenshots && p.screenshots.length) {
+        screenshotsHTML = '<div class="modal-screenshots">' +
+          p.screenshots.map(s => '<img src="' + s + '" alt="Скриншот проекта" loading="lazy" />').join('') +
+          '</div>';
+      }
+
+      let featuresHTML = '';
+      if (p.features && p.features.length) {
+        featuresHTML = '<div class="modal-features"><h3>Что сделано</h3><ul>' +
+          p.features.map(f => '<li>' + f + '</li>').join('') +
+          '</ul></div>';
+      }
+
+      modal.innerHTML =
+        '<button class="modal-close" id="modalClose">' + CLOSE + '</button>' +
+        '<div class="modal-icon">' + (ICONS[p.icon] || ICONS.layout) + '</div>' +
+        '<h2>' + p.title + '</h2>' +
+        (p.badge ? '<span class="modal-badge">' + p.badge + '</span>' : '') +
+        '<p class="modal-desc">' + p.detail + '</p>' +
+        '<div class="modal-tags">' + p.tags.map(t => '<span class="modal-tag">' + t + '</span>').join('') + '</div>' +
+        screenshotsHTML +
+        featuresHTML;
+
+      const overlay = document.getElementById("modalOverlay");
+      overlay.classList.add("open");
+      overlay.scrollTop = 0;
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => overlay.classList.add("visible"));
+      });
+
+      document.getElementById("modalClose").addEventListener("click", closeModal);
+      overlay.addEventListener("click", handleOverlayClick);
+      document.addEventListener("keydown", onEsc);
+    }
+
+    function handleOverlayClick(e) {
+      if (e.target === document.getElementById("modalOverlay")) closeModal();
+    }
+
+    function closeModal() {
+      const overlay = document.getElementById("modalOverlay");
+      overlay.classList.remove("visible");
+      overlay.removeEventListener("click", handleOverlayClick);
+      document.removeEventListener("keydown", onEsc);
+      setTimeout(() => overlay.classList.remove("open"), 280);
+    }
+
+    function onEsc(e) { if (e.key === "Escape") closeModal(); }
 
     function setupSpotlight() {
       const sp = document.getElementById("spotlight");
