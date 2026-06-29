@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+
+  <title>Портфолио — Михаил Кривошеин</title>
+  <!-- Иконка вкладки — фото -->
+  <link rel="icon" type="image/jpeg" href="foto.jpg" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --accent:       #818cf8;
+      --accent-soft:  rgba(129,140,248,.14);
+      --spot:         rgba(129,140,248,.12);
+      --bg:           #0d0e12;
+      --card:         rgba(255,255,255,.035);
+      --card-border:  rgba(255,255,255,.09);
+      --text:         #f3f4f6;
+      --muted:        #9599a4;
+      --radius:       12px;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { min-height: 100%; }
+    body {
+      font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+      background: var(--bg); color: var(--text);
+      -webkit-font-smoothing: antialiased;
+      padding: 40px 20px 56px; min-height: 100dvh; position: relative;
+    }
+    .spotlight {
+      position: fixed; inset: 0; z-index: 0; pointer-events: none;
+      background: radial-gradient(600px circle at var(--mx,50%) var(--my,0%), var(--spot), transparent 70%);
+      transition: background .15s ease-out;
+    }
+
+    .wrap { position: relative; z-index: 1; max-width: 720px; margin: 0 auto; }
+
+    .back {
+      display: inline-flex; align-items: center; gap: 7px;
+      color: var(--muted); text-decoration: none; font-size: .86rem; font-weight: 500;
+      padding: 6px 12px; border: 1px solid var(--card-border); border-radius: 999px;
+      transition: color .2s, border-color .2s, transform .2s; background: var(--card);
+    }
+    .back:hover { color: var(--accent); border-color: var(--accent); transform: translateX(-2px); }
+    .back svg { width: 14px; height: 14px; fill: currentColor; }
+
+    .head { margin: 22px 0 20px; }
+    .head h1 { font-size: 1.6rem; font-weight: 800; letter-spacing: -.02em; }
+    .head p  { margin-top: 6px; color: var(--muted); font-size: .92rem; }
+
+    /* Плотная сетка карточек — как список коннекторов */
+    .grid { display: grid; gap: 10px; grid-template-columns: repeat(auto-fill, minmax(330px, 1fr)); }
+
+    .card {
+      display: flex; align-items: flex-start; gap: 11px;
+      padding: 11px 13px;
+      background: var(--card); border: 1px solid var(--card-border);
+      border-radius: var(--radius); text-decoration: none; color: var(--text);
+      transition: transform .16s, border-color .16s, background .16s;
+      opacity: 0; transform: translateY(8px); animation: reveal .45s cubic-bezier(.2,.7,.2,1) forwards;
+    }
+    .card:hover { transform: translateY(-2px); border-color: var(--accent); background: rgba(255,255,255,.05); }
+    @keyframes reveal { to { opacity: 1; transform: translateY(0); } }
+
+    .ic {
+      flex: 0 0 auto; width: 38px; height: 38px; border-radius: 9px;
+      display: grid; place-items: center; font-size: 19px; overflow: hidden;
+    }
+    .ic img { width: 100%; height: 100%; object-fit: cover; }
+
+    .main { flex: 1; min-width: 0; padding-top: 1px; }
+    .row1 { display: flex; align-items: center; gap: 7px; }
+    .title { font-weight: 600; font-size: .9rem; line-height: 1.25; flex: 1; min-width: 0; }
+    .badge { font-size: .64rem; font-weight: 600; color: var(--accent); background: var(--accent-soft); padding: 2px 7px; border-radius: 999px; white-space: nowrap; }
+    .arrow { color: var(--muted); opacity: .5; transition: transform .16s, color .16s, opacity .16s; flex: 0 0 auto; }
+    .card:hover .arrow { color: var(--accent); opacity: 1; transform: translateX(2px); }
+    .arrow svg { width: 14px; height: 14px; fill: currentColor; display: block; }
+
+    .desc { margin-top: 3px; color: var(--muted); font-size: .8rem; line-height: 1.4; }
+
+    .footer { text-align: center; margin-top: 28px; color: var(--muted); font-size: .78rem; }
+
+    @media (max-width: 520px) {
+      .grid { grid-template-columns: 1fr; }
+      .head h1 { font-size: 1.4rem; }
+      body { padding: 28px 16px 40px; }
+    }
+    @media (hover: none) { .spotlight { display: none; } }
+  </style>
+</head>
+<body>
+  <div class="spotlight" id="spotlight"></div>
+
+  <div class="wrap">
+    <a class="back" href="index.html">
+      <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg> На визитку
+    </a>
+
+    <header class="head reveal">
+      <h1>Портфолио</h1>
+      <p>Избранные проекты: разработка и автоматизация под ключ</p>
+    </header>
+
+    <main class="grid" id="grid"></main>
+
+    <footer class="footer">© 2026 Михаил Кривошеин</footer>
+  </div>
+
+  <script>
+    /* =========================================================================
+       👇 РЕДАКТИРУЙ ЗДЕСЬ. Добавляй/меняй свои работы. Код ниже трогать не нужно.
+       Поля карточки:
+         emoji  — иконка-эмодзи в квадрате слева (или "")
+         image  — путь к скриншоту/лого (напр. "work1.jpg"); если задан — заменяет эмодзи
+         grad   — фон квадрата-иконки (CSS-градиент), если нет своей картинки
+         badge  — метка-категория справа от названия (напр. "CRM"); или ""
+         title  — название проекта
+         desc   — короткое описание (1-2 строки)
+         url    — ссылка на проект (или "" — тогда карточка не кликается)
+       ========================================================================= */
+    const PROJECTS = [
+      {
+        emoji: "🤖", image: "", grad: "linear-gradient(135deg,#4f46e5,#7c3aed)", badge: "CRM",
+        title: "CRM для отдела продаж",
+        desc: "Автоматизация заявок, воронки и отчётности. Ручной работы у менеджеров вдвое меньше.",
+        url: "#"
+      },
+      {
+        emoji: "💬", image: "", grad: "linear-gradient(135deg,#0ea5e9,#22d3ee)", badge: "Bot",
+        title: "Telegram-бот для клиентских задач",
+        desc: "Приём заявок, оплаты и уведомления прямо в чате. Работает 24/7 без оператора.",
+        url: "#"
+      },
+      {
+        emoji: "🌐", image: "", grad: "linear-gradient(135deg,#ec4899,#f59e0b)", badge: "Web",
+        title: "Лендинг под ключ",
+        desc: "Сайт-визитка с фокусом на конверсию — от структуры и текста до публикации.",
+        url: "#"
+      },
+      {
+        emoji: "🔗", image: "", grad: "linear-gradient(135deg,#10b981,#0ea5e9)", badge: "API",
+        title: "Связка сервисов и автоматизация",
+        desc: "CRM, мессенджеры и платёжка соединены через API — данные ходят между системами сами.",
+        url: "#"
+      },
+    ];
+
+    /* ===================== Движок. Менять не нужно. ===================== */
+    const ARROW = '<svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg>';
+
+    function renderProjects() {
+      const grid = document.getElementById("grid");
+      PROJECTS.forEach((p, i) => {
+        const card = document.createElement(p.url ? "a" : "div");
+        card.className = "card";
+        card.style.animationDelay = (0.03 + i * 0.04) + "s";
+        if (p.url) { card.href = p.url; card.target = "_blank"; card.rel = "noopener noreferrer"; }
+
+        const ic = document.createElement("div");
+        ic.className = "ic";
+        if (p.image) {
+          const img = document.createElement("img"); img.src = p.image; img.alt = p.title; ic.appendChild(img);
+        } else {
+          ic.style.background = p.grad || "linear-gradient(135deg,#4f46e5,#7c3aed)";
+          ic.textContent = p.emoji || "📦";
+        }
+
+        const main = document.createElement("div"); main.className = "main";
+        const row1 = document.createElement("div"); row1.className = "row1";
+        const t = document.createElement("span"); t.className = "title"; t.textContent = p.title;
+        row1.appendChild(t);
+        if (p.badge) { const b = document.createElement("span"); b.className = "badge"; b.textContent = p.badge; row1.appendChild(b); }
+        if (p.url) { const a = document.createElement("span"); a.className = "arrow"; a.innerHTML = ARROW; row1.appendChild(a); }
+
+        const d = document.createElement("div"); d.className = "desc"; d.textContent = p.desc;
+
+        main.append(row1, d);
+        card.append(ic, main);
+        grid.appendChild(card);
+      });
+    }
+
+    function setupSpotlight() {
+      const sp = document.getElementById("spotlight");
+      window.addEventListener("pointermove", e => {
+        sp.style.setProperty("--mx", e.clientX + "px");
+        sp.style.setProperty("--my", e.clientY + "px");
+      });
+    }
+
+    renderProjects();
+    setupSpotlight();
+  </script>
+</body>
+</html>
