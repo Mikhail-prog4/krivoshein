@@ -25,6 +25,16 @@
       --muted:        #9599a4;
       --radius:       12px;
     }
+    body.light {
+      --accent:       #6366f1;
+      --accent-soft:  rgba(99,102,241,.10);
+      --spot:         rgba(99,102,241,.10);
+      --bg:           #faf9f7;
+      --card:         #ffffff;
+      --card-border:  #ececea;
+      --text:         #18181b;
+      --muted:        #6b6b72;
+    }
     * { margin: 0; padding: 0; box-sizing: border-box; }
     html, body { min-height: 100%; }
     body {
@@ -32,6 +42,7 @@
       background: var(--bg); color: var(--text);
       -webkit-font-smoothing: antialiased;
       padding: 40px 20px 56px; min-height: 100dvh; position: relative;
+      transition: background .45s ease, color .45s ease;
     }
     .spotlight {
       position: fixed; inset: 0; z-index: 0; pointer-events: none;
@@ -91,11 +102,32 @@
       .head h1 { font-size: 1.4rem; }
       body { padding: 28px 16px 40px; }
     }
+    .card:hover { background: rgba(255,255,255,.05); }
+    body.light .card:hover { background: rgba(0,0,0,.03); }
+
+    .theme-toggle {
+      position: fixed; top: 18px; right: 18px; z-index: 10;
+      width: 42px; height: 42px; display: grid; place-items: center;
+      border-radius: 50%; cursor: pointer;
+      background: var(--card); border: 1px solid var(--card-border); color: var(--text);
+      transition: transform .2s, background .45s, border-color .45s;
+    }
+    .theme-toggle:hover { transform: rotate(20deg) scale(1.06); }
+    .theme-toggle svg { width: 19px; height: 19px; fill: currentColor; }
+    .theme-toggle .sun  { display: none; }
+    body.light .theme-toggle .sun  { display: block; }
+    body.light .theme-toggle .moon { display: none; }
+
     @media (hover: none) { .spotlight { display: none; } }
   </style>
 </head>
 <body>
   <div class="spotlight" id="spotlight"></div>
+
+  <button class="theme-toggle" id="themeToggle" aria-label="Сменить тему">
+    <svg class="moon" viewBox="0 0 24 24"><path d="M12 3a9 9 0 109 9c0-.46-.04-.92-.1-1.36a5.39 5.39 0 01-7.54-7.54A9 9 0 0012 3z"/></svg>
+    <svg class="sun"  viewBox="0 0 24 24"><path d="M12 7a5 5 0 100 10 5 5 0 000-10zm0-5a1 1 0 011 1v2a1 1 0 11-2 0V3a1 1 0 011-1zm0 16a1 1 0 011 1v2a1 1 0 11-2 0v-2a1 1 0 011-1zM2 12a1 1 0 011-1h2a1 1 0 110 2H3a1 1 0 01-1-1zm16 0a1 1 0 011-1h2a1 1 0 110 2h-2a1 1 0 01-1-1zM4.2 4.2a1 1 0 011.4 0l1.5 1.5A1 1 0 015.7 7.1L4.2 5.6a1 1 0 010-1.4zm12.6 12.6a1 1 0 011.4 0l1.5 1.5a1 1 0 01-1.4 1.4l-1.5-1.5a1 1 0 010-1.4zM19.8 4.2a1 1 0 010 1.4l-1.5 1.5a1 1 0 01-1.4-1.4l1.5-1.5a1 1 0 011.4 0zM7.1 16.9a1 1 0 010 1.4l-1.5 1.5a1 1 0 01-1.4-1.4l1.5-1.5a1 1 0 011.4 0z"/></svg>
+  </button>
 
   <div class="wrap">
     <a class="back" href="index.html">
@@ -194,7 +226,25 @@
       });
     }
 
+    function setupTheme(){
+      const saved = localStorage.getItem("theme");
+      const systemLight = window.matchMedia("(prefers-color-scheme: light)").matches;
+      const initial = saved || (systemLight ? "light" : "dark");
+      if (initial === "light") document.body.classList.add("light");
+
+      document.getElementById("themeToggle").addEventListener("click", ()=>{
+        document.body.classList.toggle("light");
+        localStorage.setItem("theme", document.body.classList.contains("light") ? "light" : "dark");
+      });
+
+      window.matchMedia("(prefers-color-scheme: light)").addEventListener("change", e=>{
+        if (localStorage.getItem("theme")) return;
+        document.body.classList.toggle("light", e.matches);
+      });
+    }
+
     renderProjects();
+    setupTheme();
     setupSpotlight();
   </script>
 </body>

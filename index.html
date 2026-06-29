@@ -318,9 +318,19 @@
     function renderFooter(){ document.getElementById("footer").textContent = CONFIG.footerText; }
 
     function setupTheme(){
-      if (CONFIG.defaultTheme === "light") document.body.classList.add("light");
+      const saved = localStorage.getItem("theme");
+      const systemLight = window.matchMedia("(prefers-color-scheme: light)").matches;
+      const initial = saved || (systemLight ? "light" : "dark") || CONFIG.defaultTheme;
+      if (initial === "light") document.body.classList.add("light");
+
       document.getElementById("themeToggle").addEventListener("click", ()=>{
         document.body.classList.toggle("light");
+        localStorage.setItem("theme", document.body.classList.contains("light") ? "light" : "dark");
+      });
+
+      window.matchMedia("(prefers-color-scheme: light)").addEventListener("change", e=>{
+        if (localStorage.getItem("theme")) return;
+        document.body.classList.toggle("light", e.matches);
       });
     }
     function setupSpotlight(){
