@@ -337,8 +337,8 @@
 
     const PROJECTS = [
       {
-        icon: "erp", badge: "ERP", flagship: true,
-        title: "ERP-система управления снабжением",
+        icon: "erp", badge: "Производство", flagship: true,
+        title: "Система управления заказами и производством",
         desc: "Полный цикл: от проектирования профиля до отгрузки готовой продукции.",
         result: "5 модулей · 3D-конструктор · авто-расчёт стоимости",
         whyMe: "Единственный разработчик: от архитектуры БД до production-деплоя",
@@ -660,7 +660,7 @@
 
       let featuresHTML = '';
       if (p.features && p.features.length) {
-        featuresHTML = '<div class="modal-features"><h3>Что сделано</h3><ul>' +
+        featuresHTML = '<div class="modal-features"><h3>Реализовано</h3><ul>' +
           p.features.map(f => '<li>' + f + '</li>').join('') +
           '</ul></div>';
       }
