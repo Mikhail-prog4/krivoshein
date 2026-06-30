@@ -305,6 +305,7 @@
       reply:      '<svg viewBox="0 0 24 24"><path d="M9 14L4 9l5-5m-5 5h11a4 4 0 014 4v2M4 9h7"/></svg>',
       dashboard:  '<svg viewBox="0 0 24 24"><path d="M4 4h6v8H4V4zm10 0h6v5h-6V4zM4 16h6v4H4v-4zm10-3h6v7h-6v-7z"/></svg>',
       bank:       '<svg viewBox="0 0 24 24"><path d="M12 2L2 7h20L12 2zM4 9v8h2V9H4zm5 0v8h2V9H9zm5 0v8h2V9h-2zm5 0v8h2V9h-2zM2 19h20v2H2v-2z"/></svg>',
+      chart:      '<svg viewBox="0 0 24 24"><path d="M3 3v18h18M7 16l4-4 4 4 5-6"/></svg>',
     };
 
     const ARROW = '<svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg>';
@@ -526,6 +527,30 @@
           "Караоке-субтитры (.ass): 1–2 слова, ключевые оранжевым, позиция выше кнопок соцсетей",
           "Audio chain: шумодав RNNoise → компрессор → нормализация −14 LUFS + SFX по событиям (whoosh/tick/swoosh)",
           "Двойной экспорт: 1080×1920 (Reels/Shorts/TikTok) + 1920×1080 (YouTube) за один запуск, стоимость 0 ₽",
+        ],
+        screenshots: [],
+      },
+      {
+        icon: "chart", badge: "ML / AI", flagship: true,
+        title: "Предиктивная аналитика для спорта",
+        desc: "Ансамбль из 5 нейросетевых голов, 4 вида спорта, ежесуточное переобучение, автозащита от деградации, value-стратегия с Kelly Criterion — production-система с подтверждённой альфой.",
+        result: "4 спорта · 5 моделей · 190 фичей · 30+ лиг · CLV +2.58% · автопайплайн 24/7",
+        whyMe: "Единственный разработчик: от сбора данных и обучения моделей до Telegram-бота и деплоя",
+        detail: "Production-система предиктивной аналитики для четырёх видов спорта. Ансамбль из 5 моделей (FFM Transformer, TabularNet, OddsCalibrator, ELO, GBM), объединённых через MetaLearner. 190-мерный вектор фичей: форма, H2H, standings, xG, составы, букмекерские коэффициенты. Ежесуточный пайплайн: сбор данных из 5 источников → переобучение моделей → champion-challenger A/B-тест → автоматический rollback при деградации. Value-стратегия: edge detection, Kelly Criterion, odds-zoning по спортам. Оркестратор самоуправления: самодиагностика, drift-мониторинг, автодокачка данных. Telegram-бот с подпиской, лендинг-дашборд.",
+        tags: ["Python", "PyTorch", "scikit-learn", "PostgreSQL", "aiogram 3", "Flask", "SQLAlchemy", "pandas", "NumPy", "systemd"],
+        features: [
+          "Ансамбль из 5 голов: FFM Transformer + TabularNet + OddsCalibrator + ELO + GBM (HistGradientBoosting), blend через MetaLearner",
+          "190-мерный вектор фичей: форма, H2H, standings, xG, травмы, составы, implied-вероятности букмекеров",
+          "4 вида спорта (футбол 30+ лиг, теннис ATP/WTA, хоккей NHL, баскетбол NBA) — отдельные модели и калибровка для каждого",
+          "Champion-Challenger система (model_guard): honest holdout A/B-тест, автоматический rollback при деградации > 2%",
+          "Ежесуточный пайплайн (~5 часов): сбор кэфов из 5 источников → обновление standings → переобучение → валидация → деплой",
+          "Value betting: edge detection (модель vs букмекер), Kelly Criterion (1/4 Kelly), odds-zoning по спортам и лигам",
+          "Temperature scaling + Isotonic калибровка: per-league (30+ лиг) и per-sport температуры, rolling пересчёт каждые 14 дней",
+          "Оркестратор самоуправления: цикл Сенсоры → Диагност → Решатель → Руки → Голос, drift-мониторинг (z-score ≥ 2.0)",
+          "Adaptive weights: автоподстройка весов ансамбля по Brier score на скользящем окне 300 матчей",
+          "Telegram-бот: онбординг, 3 тарифа с paywall, ручное подтверждение оплаты, утренний admin-отчёт с ROI по спортам",
+          "Walk-forward backtesting: grid-оптимизация 768 конфигураций стратегий, Sharpe ratio, out-of-sample валидация",
+          "Лендинг-дашборд: 4 страницы спортов, WR%, VIP-прогнозы, Edge-матчи, Basic Auth, systemd-деплой на VPS",
         ],
         screenshots: [],
       },
