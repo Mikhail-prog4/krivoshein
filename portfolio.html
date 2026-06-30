@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="robots" content="noindex, nofollow" />
 
-  <title>Портфолио — Михаил Кривошеин</title>
+  <title>Михаил Кривошеин — визитка разработчика</title>
   <link rel="icon" type="image/x-icon" href="favicon.ico" />
   <link rel="icon" type="image/png" sizes="256x256" href="favicon.png" />
 
@@ -188,6 +188,64 @@
     body.light .theme-toggle .sun  { display: block; }
     body.light .theme-toggle .moon { display: none; }
 
+    .section { margin-bottom: 24px; }
+    .section-title { font-size: 1.05rem; font-weight: 700; margin-bottom: 12px; letter-spacing: -.01em; color: var(--muted); text-transform: uppercase; font-size: .72rem; letter-spacing: .06em; }
+
+    .card.flagship {
+      border-color: rgba(129,140,248,.25);
+      box-shadow: 0 0 20px rgba(129,140,248,.08), 0 4px 12px rgba(0,0,0,.15);
+    }
+    body.light .card.flagship {
+      border-color: rgba(99,102,241,.2);
+      box-shadow: 0 0 20px rgba(99,102,241,.06), 0 4px 12px rgba(0,0,0,.06);
+    }
+    .card.flagship:hover {
+      box-shadow: 0 0 28px rgba(129,140,248,.14), 0 6px 16px rgba(0,0,0,.2);
+    }
+
+    .nda-label {
+      font-size: .58rem; font-weight: 600; color: var(--muted);
+      background: rgba(255,255,255,.06); border: 1px solid var(--card-border);
+      padding: 1px 5px; border-radius: 4px; white-space: nowrap; margin-left: auto;
+    }
+    body.light .nda-label { background: rgba(0,0,0,.04); }
+
+    .result {
+      font-size: .72rem; font-weight: 600; color: var(--accent);
+      margin-top: 4px; line-height: 1.3;
+    }
+
+    .why-me {
+      font-size: .72rem; color: var(--muted); font-style: italic;
+      margin-top: 2px; line-height: 1.3;
+    }
+
+    .cta-section {
+      text-align: center; margin-top: 32px; padding: 28px 0 0;
+      border-top: 1px solid var(--card-border);
+    }
+    .cta-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 6px; }
+    .cta-sub { color: var(--muted); font-size: .85rem; margin-bottom: 16px; }
+    .cta-buttons { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
+    .cta-btn {
+      display: inline-flex; align-items: center; gap: 7px;
+      padding: 10px 20px; border-radius: 10px; font-size: .85rem; font-weight: 600;
+      text-decoration: none; transition: transform .16s, box-shadow .16s;
+    }
+    .cta-btn:hover { transform: translateY(-2px); }
+    .cta-btn.primary {
+      background: var(--accent); color: #fff;
+      box-shadow: 0 4px 14px rgba(129,140,248,.3);
+    }
+    .cta-btn.primary:hover { box-shadow: 0 6px 20px rgba(129,140,248,.4); }
+    .cta-btn.secondary {
+      background: var(--card); color: var(--text);
+      border: 1px solid var(--card-border);
+    }
+    .cta-btn svg { width: 16px; height: 16px; fill: currentColor; }
+
+    .modal-result { font-size: .85rem; font-weight: 600; color: var(--accent); margin-bottom: 14px; }
+
     @media (max-width: 520px) {
       .grid { grid-template-columns: 1fr; }
       .head h1 { font-size: 1.4rem; }
@@ -216,7 +274,34 @@
       <p>Избранные проекты: разработка и автоматизация под ключ</p>
     </header>
 
-    <main class="grid" id="grid"></main>
+    <section class="section">
+      <div class="section-title">Ключевые проекты</div>
+      <div class="grid" id="flagshipsGrid"></div>
+    </section>
+
+    <section class="section">
+      <div class="section-title">Все проекты</div>
+      <div class="grid" id="allGrid"></div>
+    </section>
+
+    <div class="cta-section">
+      <div class="cta-title">Обсудить задачу</div>
+      <p class="cta-sub">Напишите — обсудим вашу задачу и формат работы</p>
+      <div class="cta-buttons">
+        <a class="cta-btn primary" href="https://t.me/KMM_michael" target="_blank">
+          <svg viewBox="0 0 24 24"><path d="M23.91 3.79L20.3 20.84c-.25 1.21-.98 1.5-1.99.94l-5.5-4.07-2.66 2.57c-.3.3-.55.56-1.1.56l.39-5.59 10.16-9.18c.44-.39-.1-.61-.68-.22L6.27 13.5.85 11.81c-1.18-.37-1.2-1.18.25-1.75l21.1-8.13c.98-.36 1.84.22 1.71 1.86z"/></svg>
+          Telegram
+        </a>
+        <a class="cta-btn secondary" href="tel:+79500500060">
+          <svg viewBox="0 0 24 24"><path d="M6.62 10.79a15.5 15.5 0 0 0 6.59 6.59l2.2-2.2a1 1 0 0 1 1.02-.24c1.12.37 2.33.57 3.57.57a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.24.2 2.45.57 3.57a1 1 0 0 1-.24 1.02z"/></svg>
+          Позвонить
+        </a>
+        <a class="cta-btn secondary" href="mailto:kmm040988@gmail.com">
+          <svg viewBox="0 0 24 24"><path d="M20 4H4a2 2 0 00-2 2v12a2 2 0 002 2h16a2 2 0 002-2V6a2 2 0 00-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+          Почта
+        </a>
+      </div>
+    </div>
 
     <footer class="footer">© 2026 Михаил Кривошеин</footer>
   </div>
@@ -252,23 +337,28 @@
 
     const PROJECTS = [
       {
-        icon: "erp", badge: "ERP",
+        icon: "erp", badge: "ERP", flagship: true,
         title: "ERP-система управления снабжением",
-        desc: "Управление заказами и производством — от заявки до отгрузки.",
-        detail: "Полноценная production-система для компании, работающей с доборными элементами из металла. Управление всей цепочкой: от приёма заказа до отгрузки готовой продукции.",
+        desc: "Полный цикл: от проектирования профиля до отгрузки готовой продукции.",
+        result: "5 модулей · 3D-конструктор · авто-расчёт стоимости",
+        whyMe: "Единственный разработчик: от архитектуры БД до production-деплоя",
+        detail: "Полный цикл работы с доборными элементами кровли и фасада: от проектирования профиля до отгрузки готовой продукции. Визуальный конструктор профилей с 3D-просмотром, автоматический расчёт стоимости и площади, управление заказами и контрагентами, контроль производства по этапам.",
         tags: ["Python", "FastAPI", "PostgreSQL", "SQLAlchemy", "Alembic", "JWT", "Nginx"],
         features: [
-          "Модули: заказы, производство, справочники, аудит, кастомные поля",
-          "REST API, система ролей и прав доступа",
-          "Авто-бэкапы БД каждые сутки, healthcheck каждые 5 минут",
-          "Деплой без GitHub: tar+ssh на production-сервер",
+          "Визуальный конструктор профилей с 3D-просмотром",
+          "Автоматический расчёт стоимости и площади",
+          "Управление заказами, контрагентами и складом",
+          "Контроль производства по этапам",
+          "Печать счетов и этикеток",
         ],
         screenshots: [],
       },
       {
-        icon: "game", badge: "Web App",
+        icon: "game", badge: "Web App", flagship: true,
         title: "Геймифицированный AI-продукт",
         desc: "Многодневная игра: стреляй по слабым идеям, получай персональные AI-рекомендации.",
+        result: "AI-персонализация · 2 эпизода · production",
+        whyMe: "Full-stack: фронтенд, бэкенд, AI-интеграция, деплой",
         detail: "Интерактивная бесплатная игра для онлайн-школы. Игрок проходит эпизоды: в первом — учится критически оценивать бизнес-идеи, во втором — получает персональные AI-рекомендации по микропродуктам на основе своих ответов.",
         tags: ["Next.js", "React", "TypeScript", "Prisma", "PostgreSQL", "Claude API", "Vercel"],
         features: [
@@ -308,9 +398,11 @@
         screenshots: [],
       },
       {
-        icon: "server", badge: "Backend",
+        icon: "server", badge: "Backend", flagship: true,
         title: "Микросервисная экосистема",
         desc: "4 сервиса для онлайн-школы: платежи, финансы, поддержка, панель управления.",
+        result: "4 сервиса · 2 платёжных шлюза · чеки 54-ФЗ",
+        whyMe: "Спроектировал и реализовал всю экосистему с нуля",
         detail: "Набор связанных микросервисов для автоматизации онлайн-школы. Единая архитектура: Fastify + Prisma + PostgreSQL + Redis. Каждый сервис решает свою задачу, все связаны через общую панель управления.",
         tags: ["Node.js", "TypeScript", "Fastify", "Prisma", "PostgreSQL", "Redis", "BullMQ", "Docker"],
         features: [
@@ -505,30 +597,53 @@
       },
     ];
 
+    function renderCard(p, i, container, delay) {
+      const card = document.createElement("div");
+      card.className = p.flagship ? "card flagship" : "card";
+      card.style.animationDelay = delay + "s";
+      card.addEventListener("click", () => openModal(i));
+
+      const ic = document.createElement("div");
+      ic.className = "ic";
+      ic.innerHTML = ICONS[p.icon] || ICONS.layout;
+
+      const main = document.createElement("div"); main.className = "main";
+      const row1 = document.createElement("div"); row1.className = "row1";
+      const t = document.createElement("span"); t.className = "title"; t.textContent = p.title;
+      row1.appendChild(t);
+      if (p.badge) { const b = document.createElement("span"); b.className = "badge"; b.textContent = p.badge; row1.appendChild(b); }
+      const nda = document.createElement("span"); nda.className = "nda-label"; nda.textContent = "под NDA";
+      row1.appendChild(nda);
+      const a = document.createElement("span"); a.className = "arrow"; a.innerHTML = ARROW; row1.appendChild(a);
+
+      const d = document.createElement("div"); d.className = "desc"; d.textContent = p.desc;
+      main.append(row1, d);
+
+      if (p.result) {
+        const r = document.createElement("div"); r.className = "result"; r.textContent = p.result;
+        main.appendChild(r);
+      }
+      if (p.whyMe) {
+        const w = document.createElement("div"); w.className = "why-me"; w.textContent = p.whyMe;
+        main.appendChild(w);
+      }
+
+      card.append(ic, main);
+      container.appendChild(card);
+    }
+
     function renderProjects() {
-      const grid = document.getElementById("grid");
+      const flagshipsGrid = document.getElementById("flagshipsGrid");
+      const allGrid = document.getElementById("allGrid");
+      let fIdx = 0, aIdx = 0;
       PROJECTS.forEach((p, i) => {
-        const card = document.createElement("div");
-        card.className = "card";
-        card.style.animationDelay = (0.03 + i * 0.04) + "s";
-        card.addEventListener("click", () => openModal(i));
-
-        const ic = document.createElement("div");
-        ic.className = "ic";
-        ic.innerHTML = ICONS[p.icon] || ICONS.layout;
-
-        const main = document.createElement("div"); main.className = "main";
-        const row1 = document.createElement("div"); row1.className = "row1";
-        const t = document.createElement("span"); t.className = "title"; t.textContent = p.title;
-        row1.appendChild(t);
-        if (p.badge) { const b = document.createElement("span"); b.className = "badge"; b.textContent = p.badge; row1.appendChild(b); }
-        const a = document.createElement("span"); a.className = "arrow"; a.innerHTML = ARROW; row1.appendChild(a);
-
-        const d = document.createElement("div"); d.className = "desc"; d.textContent = p.desc;
-
-        main.append(row1, d);
-        card.append(ic, main);
-        grid.appendChild(card);
+        if (p.flagship) {
+          renderCard(p, i, flagshipsGrid, 0.03 + fIdx * 0.06);
+          fIdx++;
+        } else {
+          renderCard(p, i, allGrid, 0.03 + aIdx * 0.04);
+          aIdx++;
+        }
       });
     }
 
@@ -556,6 +671,7 @@
         '<h2>' + p.title + '</h2>' +
         (p.badge ? '<span class="modal-badge">' + p.badge + '</span>' : '') +
         '<p class="modal-desc">' + p.detail + '</p>' +
+        (p.result ? '<div class="modal-result">' + p.result + '</div>' : '') +
         '<div class="modal-tags">' + p.tags.map(t => '<span class="modal-tag">' + t + '</span>').join('') + '</div>' +
         screenshotsHTML +
         featuresHTML;
