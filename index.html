@@ -306,7 +306,9 @@
       const box=document.getElementById("links");
       CONFIG.buttons.forEach((b,i)=>{
         const a=document.createElement("a");
-        a.className="link-btn reveal"; a.href=b.url; a.target="_blank"; a.rel="noopener noreferrer";
+        a.className="link-btn reveal"; a.href=b.url;
+        const isExternal = b.url.startsWith("http") || b.url.startsWith("tel:") || b.url.startsWith("mailto:");
+        if (isExternal) { a.target="_blank"; a.rel="noopener noreferrer"; }
         a.style.animationDelay = (0.38 + i*0.05) + "s";
         const ico=document.createElement("span"); ico.className="link-ico";
         if (ICONS[b.icon]) ico.innerHTML = ICONS[b.icon];
