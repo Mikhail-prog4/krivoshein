@@ -91,10 +91,11 @@
     .ic svg { width: 20px; height: 20px; fill: currentColor; }
 
     .main { flex: 1; min-width: 0; padding-top: 1px; }
-    .row1 { display: flex; align-items: center; gap: 5px 7px; flex-wrap: wrap; }
+    .row1 { display: flex; align-items: flex-start; gap: 5px 7px; }
     .title { font-weight: 600; font-size: .9rem; line-height: 1.25; flex: 1; min-width: 0; }
+    .badges { display: flex; align-items: center; gap: 5px; margin-top: 3px; }
     .badge { font-size: .64rem; font-weight: 600; color: var(--accent); background: var(--accent-soft); padding: 2px 7px; border-radius: 999px; white-space: nowrap; }
-    .arrow { color: var(--muted); opacity: .5; transition: transform .16s, color .16s, opacity .16s; flex: 0 0 auto; }
+    .arrow { color: var(--muted); opacity: .5; transition: transform .16s, color .16s, opacity .16s; flex: 0 0 auto; margin-top: 2px; }
     .card:hover .arrow { color: var(--accent); opacity: 1; transform: translateX(2px); }
     .arrow svg { width: 14px; height: 14px; fill: currentColor; display: block; }
 
@@ -580,14 +581,16 @@
         const main = document.createElement("div"); main.className = "main";
         const row1 = document.createElement("div"); row1.className = "row1";
         const t = document.createElement("span"); t.className = "title"; t.textContent = p.title;
-        row1.appendChild(t);
-        if (p.badge) { const b = document.createElement("span"); b.className = "badge"; b.textContent = p.badge; row1.appendChild(b); }
+        const a = document.createElement("span"); a.className = "arrow"; a.innerHTML = ARROW;
+        row1.append(t, a);
+
+        const badges = document.createElement("div"); badges.className = "badges";
+        if (p.badge) { const b = document.createElement("span"); b.className = "badge"; b.textContent = p.badge; badges.appendChild(b); }
         const nda = document.createElement("span"); nda.className = "nda-label"; nda.textContent = "под NDA";
-        row1.appendChild(nda);
-        const a = document.createElement("span"); a.className = "arrow"; a.innerHTML = ARROW; row1.appendChild(a);
+        badges.appendChild(nda);
 
         const d = document.createElement("div"); d.className = "desc"; d.textContent = p.desc;
-        main.append(row1, d);
+        main.append(row1, badges, d);
         card.append(ic, main);
         grid.appendChild(card);
       });
