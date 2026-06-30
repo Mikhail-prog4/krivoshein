@@ -91,7 +91,7 @@
     .ic svg { width: 20px; height: 20px; fill: currentColor; }
 
     .main { flex: 1; min-width: 0; padding-top: 1px; }
-    .row1 { display: flex; align-items: center; gap: 7px; }
+    .row1 { display: flex; align-items: center; gap: 5px 7px; flex-wrap: wrap; }
     .title { font-weight: 600; font-size: .9rem; line-height: 1.25; flex: 1; min-width: 0; }
     .badge { font-size: .64rem; font-weight: 600; color: var(--accent); background: var(--accent-soft); padding: 2px 7px; border-radius: 999px; white-space: nowrap; }
     .arrow { color: var(--muted); opacity: .5; transition: transform .16s, color .16s, opacity .16s; flex: 0 0 auto; }
@@ -323,18 +323,19 @@
       {
         icon: "game", badge: "Web App", flagship: true,
         title: "Геймифицированный AI-продукт",
-        desc: "Многодневная игра: стреляй по слабым идеям, получай персональные AI-рекомендации.",
-        result: "AI-персонализация · 2 эпизода · production",
+        desc: "Интерактивная игра в стилистике Star Wars: игрок «стреляет» аргументами по бизнес-идеям, AI оценивает и обучает критическому мышлению.",
+        result: "3 эпизода · AI-персонализация · production",
         whyMe: "Full-stack: фронтенд, бэкенд, AI-интеграция, деплой",
-        detail: "Интерактивная бесплатная игра для онлайн-школы. Игрок проходит эпизоды: в первом — учится критически оценивать бизнес-идеи, во втором — получает персональные AI-рекомендации по микропродуктам на основе своих ответов.",
+        detail: "Геймифицированный продукт для онлайн-школы. Пользователь проходит три эпизода: учится критически оценивать бизнес-идеи, получает персональные AI-рекомендации по микропродуктам, защищает свою идею от AI-инвесторов (Тиль, Баффет, Грэм). Каждый раунд — уникальный AI-фидбек на основе ответов игрока.",
         tags: ["Next.js", "React", "TypeScript", "Prisma", "PostgreSQL", "Claude API", "Vercel"],
         features: [
-          "Многоэпизодная структура с прогрессией",
-          "AI генерирует персональные рекомендации по ответам игрока",
-          "Email-уведомления (Resend), JWT-авторизация",
-          "Задеплоен на Vercel, работает в production",
+          "3 эпизода с нарастающей сложностью и прогрессией",
+          "AI генерирует уникальный фидбек на каждый ответ игрока",
+          "Персональная генерация бизнес-идей по результатам калибровки",
+          "Лидерборды, голосования, email-уведомления (Resend)",
+          "JWT-авторизация, защита от двойных кликов, retry-логика",
         ],
-        screenshots: [],
+        screenshots: ["portfolio-img/sokol-xwing.png", "portfolio-img/sokol-attack.png", "portfolio-img/sokol-hit.png", "portfolio-img/sokol-miss.png", "portfolio-img/sokol-coords.png"],
       },
       {
         icon: "ai", badge: "AI",
