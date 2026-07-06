@@ -109,11 +109,25 @@
       border: 1px solid var(--card-border);
       border-radius: var(--radius);
       box-shadow: var(--card-shadow);
-      padding: 30px 26px 24px;
+      padding: 0 0 24px;
+      overflow: hidden;
       transition: background .45s, border-color .45s, box-shadow .45s;
     }
 
-    .topbar { display: flex; justify-content: flex-end; margin-bottom: 4px; }
+    .banner {
+      width: 100%; height: 320px;
+      background: center 30% / cover no-repeat;
+      position: relative;
+    }
+    .banner::after {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(to top, var(--bg) 0%, rgba(0,0,0,.15) 50%, transparent 100%);
+      transition: background .45s ease;
+    }
+
+    .card-body { padding: 0 26px; }
+
+    .topbar { display: flex; justify-content: flex-end; margin-bottom: 4px; position: absolute; top: 12px; right: 12px; z-index: 2; }
     .share-btn {
       width: 34px; height: 34px; display: grid; place-items: center;
       border-radius: 50%; cursor: pointer; color: var(--icon);
@@ -124,18 +138,7 @@
     .share-btn svg { width: 15px; height: 15px; fill: currentColor; }
 
     /* ===================== ПРОФИЛЬ ===================== */
-    .profile { text-align: center; }
-    .avatar {
-      width: 96px; height: 96px; margin: 0 auto 16px;
-      border-radius: 50%;
-      border: 1px solid var(--card-border);
-      box-shadow: 0 0 0 4px var(--accent-soft);
-      object-fit: cover; overflow: hidden;
-      display: grid; place-items: center;
-      background: var(--btn); color: var(--accent);
-      font-weight: 700; font-size: 32px;
-    }
-    .avatar img { width: 100%; height: 100%; object-fit: cover; }
+    .profile { text-align: center; margin-top: -24px; position: relative; z-index: 1; }
 
     .name { font-size: 1.55rem; font-weight: 700; letter-spacing: -.02em; }
     .status {
@@ -222,16 +225,19 @@
       </button>
     </div>
 
-    <section class="profile">
-      <div class="avatar reveal" id="avatar" style="animation-delay:.1s"></div>
-      <h1 class="name reveal" id="name" style="animation-delay:.16s"></h1>
-      <div class="status reveal" id="status" style="animation-delay:.22s"><span class="dot"></span><span id="statusText"></span></div>
-      <p class="title reveal" id="title" style="animation-delay:.28s"></p>
-    </section>
+    <div class="banner" id="banner"></div>
 
-    <nav class="socials reveal" id="socials" aria-label="Соцсети" style="animation-delay:.34s"></nav>
-    <nav class="links" id="links" aria-label="Ссылки"></nav>
-    <footer class="footer reveal" id="footer" style="animation-delay:.5s"></footer>
+    <div class="card-body">
+      <section class="profile">
+        <h1 class="name reveal" id="name" style="animation-delay:.16s"></h1>
+        <div class="status reveal" id="status" style="animation-delay:.22s"><span class="dot"></span><span id="statusText"></span></div>
+        <p class="title reveal" id="title" style="animation-delay:.28s"></p>
+      </section>
+
+      <nav class="socials reveal" id="socials" aria-label="Соцсети" style="animation-delay:.34s"></nav>
+      <nav class="links" id="links" aria-label="Ссылки"></nav>
+      <footer class="footer reveal" id="footer" style="animation-delay:.5s"></footer>
+    </div>
   </main>
 
   <div class="toast" id="toast"></div>
@@ -300,9 +306,7 @@
       const st = document.getElementById("status");
       if (CONFIG.status) document.getElementById("statusText").textContent = CONFIG.status;
       else st.style.display = "none";
-      const av = document.getElementById("avatar");
-      if (CONFIG.avatar){ const i=document.createElement("img"); i.src=CONFIG.avatar; i.alt=CONFIG.name; av.appendChild(i); }
-      else av.textContent = getInitials(CONFIG.name);
+      if (CONFIG.avatar) document.getElementById("banner").style.backgroundImage = "url(" + CONFIG.avatar + ")";
     }
     function renderSocials(){
       const box=document.getElementById("socials");
