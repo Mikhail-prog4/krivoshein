@@ -5,13 +5,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <!-- 👉 SEO / превью при отправке ссылки -->
-  <title>Михаил — визитка</title>
+  <title>Михаил Кривошеин — боты, сайты и автоматизация для бизнеса</title>
   <link rel="icon" type="image/x-icon" href="favicon.ico" />
   <link rel="icon" type="image/png" sizes="256x256" href="favicon.png" />
-  <meta name="description" content="Личная визитка: контакты, проекты и соцсети в одном месте." />
-  <meta property="og:title" content="Михаил — визитка" />
-  <meta property="og:description" content="Контакты, проекты и соцсети в одном месте." />
+  <link rel="canonical" href="https://kmmdev.ru/" />
+  <meta name="description" content="Превращаю ручную работу в бота или программу, которая делает её сама: боты в Telegram, сайты с оплатой, учёт заказов, ИИ-помощники." />
+  <meta property="og:title" content="Михаил Кривошеин — боты, сайты и автоматизация" />
+  <meta property="og:description" content="Превращаю ручную работу в бота или программу, которая делает её сама." />
   <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://kmmdev.ru/" />
+  <meta property="og:image" content="https://kmmdev.ru/foto.jpg" />
+  <meta property="og:locale" content="ru_RU" />
 
   <!-- Яндекс.Метрика -->
   <script type="text/javascript">
@@ -127,7 +131,7 @@
 
     .card-body { padding: 0 26px; }
 
-    .topbar { display: flex; justify-content: flex-end; margin-bottom: 4px; position: absolute; top: 12px; right: 12px; z-index: 2; }
+    .topbar { display: flex; justify-content: flex-end; margin-bottom: 4px; position: absolute; top: 12px; left: 12px; z-index: 2; }
     .share-btn {
       width: 34px; height: 34px; display: grid; place-items: center;
       border-radius: 50%; cursor: pointer; color: var(--icon);
@@ -190,6 +194,29 @@
     .link-btn:hover .link-arrow { color: var(--accent); opacity: 1; transform: translateX(3px); }
     .link-arrow svg { width: 15px; height: 15px; fill: currentColor; }
 
+    /* ===================== ЧЕМ МОГУ ПОМОЧЬ ===================== */
+    .services { margin-top: 26px; }
+    .services h2 { font-size: .74rem; font-weight: 600; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); margin-bottom: 10px; }
+    .service { display: flex; gap: 12px; padding: 10px 0; border-top: 1px solid var(--btn-border); }
+    .service:first-of-type { border-top: 0; padding-top: 0; }
+    .service-ico { flex: 0 0 auto; width: 34px; height: 34px; border-radius: 10px; display: grid; place-items: center; background: var(--accent-soft); color: var(--accent); }
+    .service-ico svg { width: 17px; height: 17px; fill: currentColor; }
+    .service b { display: block; font-size: .93rem; font-weight: 600; line-height: 1.3; }
+    .service span { display: block; margin-top: 2px; font-size: .83rem; color: var(--muted); line-height: 1.45; }
+
+    /* ===================== ГЛАВНАЯ КНОПКА ===================== */
+    .cta {
+      display: flex; align-items: center; justify-content: center; gap: 10px;
+      margin-top: 18px; padding: 15px 18px; border-radius: var(--radius-btn);
+      background: var(--accent); color: #fff; text-decoration: none;
+      font-weight: 600; font-size: 1rem;
+      box-shadow: 0 10px 26px var(--accent-soft);
+      transition: transform .2s, box-shadow .2s, filter .2s;
+    }
+    .cta:hover { transform: translateY(-2px); filter: brightness(1.08); }
+    .cta svg { width: 19px; height: 19px; fill: currentColor; }
+    .cta-hint { margin-top: 8px; text-align: center; font-size: .8rem; color: var(--muted); line-height: 1.45; }
+
     /* ===================== ФУТЕР ===================== */
     .footer { text-align: center; margin-top: 22px; color: var(--muted); font-size: .78rem; }
 
@@ -207,7 +234,8 @@
     @keyframes reveal { to { opacity: 1; transform: translateY(0); } }
 
     @media (hover: none) { .spotlight { display: none; } }
-    @media (max-width: 380px) { .name { font-size: 1.4rem; } .card { padding: 26px 20px 22px; } }
+    @media (max-width: 480px) { body { padding-top: 16px; } }
+    @media (max-width: 380px) { .name { font-size: 1.4rem; } .card-body { padding: 0 18px; } }
   </style>
 </head>
 <body>
@@ -234,6 +262,11 @@
         <p class="title reveal" id="title" style="animation-delay:.28s"></p>
       </section>
 
+      <a class="cta reveal" id="cta" target="_blank" rel="noopener noreferrer" style="animation-delay:.32s"></a>
+      <p class="cta-hint reveal" id="ctaHint" style="animation-delay:.34s"></p>
+
+      <section class="services reveal" id="services" aria-label="Чем могу помочь" style="animation-delay:.38s"></section>
+
       <nav class="socials reveal" id="socials" aria-label="Соцсети" style="animation-delay:.34s"></nav>
       <nav class="links" id="links" aria-label="Ссылки"></nav>
       <footer class="footer reveal" id="footer" style="animation-delay:.5s"></footer>
@@ -248,23 +281,32 @@
        ========================================================================= */
     const CONFIG = {
       name:   "Михаил Кривошеин",                       // 👉 имя
-      status: "Доступен для новых проектов",          // 👉 строка-статус (или "" чтобы скрыть)
-      title:  "Делаю ботов, сайты и системы учёта, которые экономят время и приносят заявки",
+      status: "Принимаю заказы",                     // 👉 строка-статус (или "" чтобы скрыть)
+      title:  "Превращаю ручную работу в бота или программу, которая делает её сама",
       avatar: "foto.jpg",                          // 👉 "foto.jpg" или "" для инициалов
+
+      // Блок «Чем могу помочь»: что делаю — простыми словами и с примером
+      services: [
+        { icon: "bot",    title: "Бот в Telegram",               text: "Отвечает клиентам, записывает на приём, принимает заказы — днём и ночью." },
+        { icon: "website", title: "Сайт с заявками и оплатой",   text: "Человек сам выбирает, платит картой и получает подтверждение на почту." },
+        { icon: "doc",    title: "Учёт вместо тетради и Excel",  text: "Заказы, склад, деньги и расчёт цены — в одной программе, без путаницы." },
+        { icon: "spark",  title: "ИИ-помощник",                  text: "Отвечает на типовые вопросы, проверяет документы, присылает отчёты." },
+      ],
+
+      // Главная кнопка
+      cta:     { title: "Написать в Telegram", url: "https://t.me/KMM_michael" },
+      ctaHint: "Опишите задачу своими словами — отвечу, как её решить, сколько займёт и сколько будет стоить",
 
       // Соцсети (иконки). type: telegram, whatsapp, instagram, facebook,
       //                          linkedin, vk, youtube, tiktok, twitter, email, website
-      socials: [
-        { type: "telegram",  url: "https://t.me/KMM_michael" },
-      ],
+      socials: [],
 
       // Кнопки. icon: ключ иконки (website, telegram, whatsapp, linkedin,
       //         blog, doc, calendar, mail...) ИЛИ любой эмодзи.
       buttons: [
-        { icon: "portfolio", title: "Портфолио — мои работы",            url: "portfolio.html" },
-        { icon: "football", title: "ИИ-прогнозы на ЧМ-2026 — бесплатно", url: "https://t.me/stavkamatchi_bot" },
-        { icon: "telegram", title: "Мой Telegram-канал — vibe coding", url: "https://t.me/KMM_vibe_coding" },
-        { icon: "mail",     title: "Написать на почту",                 url: "mailto:kmm040988@gmail.com" },
+        { icon: "portfolio", title: "Примеры моих работ",                url: "portfolio.html" },
+        { icon: "mail",      title: "Написать на почту",                 url: "mailto:kmm040988@gmail.com" },
+        { icon: "blog",      title: "Мой канал: как я делаю проекты с ИИ", url: "https://t.me/KMM_vibe_coding" },
       ],
 
       footerText: "© 2026 Михаил Кривошеин",                    // 👉 подпись внизу
@@ -294,6 +336,8 @@
       blog:      '<svg viewBox="0 0 24 24"><path d="M5 3h14a2 2 0 012 2v14a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2zm2 4v2h10V7H7zm0 4v2h10v-2H7zm0 4v2h7v-2H7z"/></svg>',
       doc:       '<svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6zm0 2l4 4h-4V4zM8 13h8v2H8v-2zm0 4h8v2H8v-2z"/></svg>',
       calendar:  '<svg viewBox="0 0 24 24"><path d="M19 4h-1V2h-2v2H8V2H6v2H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2V6a2 2 0 00-2-2zm0 16H5V10h14v10zm0-12H5V6h14v2z"/></svg>',
+      bot:       '<svg viewBox="0 0 24 24"><path d="M12 2a2 2 0 012 2c0 .74-.4 1.39-1 1.73V7h3a4 4 0 014 4v1a2 2 0 110 4v1a4 4 0 01-4 4H8a4 4 0 01-4-4v-1a2 2 0 110-4v-1a4 4 0 014-4h3V5.73c-.6-.34-1-.99-1-1.73a2 2 0 012-2zm-2 10a1.5 1.5 0 100 3 1.5 1.5 0 000-3zm4 0a1.5 1.5 0 100 3 1.5 1.5 0 000-3z"/></svg>',
+      spark:     '<svg viewBox="0 0 24 24"><path d="M12 2l2.1 6.4L20.5 10.5l-6.4 2.1L12 19l-2.1-6.4L3.5 10.5l6.4-2.1zM19 15l.9 2.6 2.6.9-2.6.9L19 22l-.9-2.6-2.6-.9 2.6-.9z"/></svg>',
       link:      '<svg viewBox="0 0 24 24"><path d="M3.9 12a3.1 3.1 0 013.1-3.1h4V7H7a5 5 0 100 10h4v-1.9H7A3.1 3.1 0 013.9 12zM8 13h8v-2H8v2zm9-6h-4v1.9h4a3.1 3.1 0 010 6.2h-4V17h4a5 5 0 100-10z"/></svg>',
     };
     const ARROW = '<svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg>';
@@ -308,8 +352,29 @@
       else st.style.display = "none";
       if (CONFIG.avatar) document.getElementById("banner").style.backgroundImage = "url(" + CONFIG.avatar + ")";
     }
+    function renderServices(){
+      const box=document.getElementById("services");
+      if (!CONFIG.services || !CONFIG.services.length) { box.style.display="none"; return; }
+      const h=document.createElement("h2"); h.textContent="Чем могу помочь"; box.appendChild(h);
+      CONFIG.services.forEach(s=>{
+        const row=document.createElement("div"); row.className="service";
+        const ico=document.createElement("div"); ico.className="service-ico"; ico.innerHTML=ICONS[s.icon]||ICONS.link;
+        const txt=document.createElement("div");
+        const b=document.createElement("b"); b.textContent=s.title;
+        const p=document.createElement("span"); p.textContent=s.text;
+        txt.append(b,p); row.append(ico,txt); box.appendChild(row);
+      });
+    }
+    function renderCta(){
+      const a=document.getElementById("cta");
+      a.href=CONFIG.cta.url;
+      a.innerHTML=ICONS.telegram;
+      a.append(document.createTextNode(CONFIG.cta.title));
+      document.getElementById("ctaHint").textContent=CONFIG.ctaHint;
+    }
     function renderSocials(){
       const box=document.getElementById("socials");
+      if (!CONFIG.socials.length) { box.style.display="none"; return; }
       CONFIG.socials.forEach(s=>{
         const ic = ICONS[s.type]; if(!ic) return;
         const a=document.createElement("a");
@@ -370,7 +435,7 @@
       });
     }
 
-    renderProfile(); renderSocials(); renderButtons(); renderFooter();
+    renderProfile(); renderServices(); renderCta(); renderSocials(); renderButtons(); renderFooter();
     setupTheme(); setupSpotlight(); setupShare();
   </script>
 </body>
